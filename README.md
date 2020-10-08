@@ -4,7 +4,7 @@
 
 View the demo at https://shirodkarpushkar.github.io/vue-antd-boilerplate/
 
-Simple Vue Ant Design Boiler plate for integrating ant design components.
+Vue Smart Store for integrating ant design components.
 
 - already contains structured files and folder
 - high scalability
