@@ -1,6 +1,4 @@
 import axios from 'axios'
-
-let serverUrl = process.env.VUE_APP_REDIRECT_OAUTH_URL
 const backendURL = process.env.VUE_APP_BACKEND_SERVER
 
 export const state = {
@@ -17,7 +15,7 @@ export const mutations = {
 
 export const getters = {
   // Whether the user is currently logged in.
-  loggedIn(state) {
+  signedIn(state) {
     return !!state.authToken
   },
   getAuthenticationToken(state) {
@@ -31,27 +29,16 @@ export const actions = {
   init({ state, dispatch }) {
     if (state.authToken !== null) {
       setDefaultAuthHeaders(state)
-      // let authtoken = state.authToken.access_token
-      // let exp = jwt.decode(authtoken).exp
-      // if (Date.now() >= exp * 1000) {
-      //   console.log('token refreshed')
-      //   dispatch('refreshToken')
-      // }
     }
   },
 
   // Logs in the current user.
-  async logIn(
-    { commit, dispatch, getters },
-    { emailAddress, userPassword } = {}
-  ) {
-    if (getters.loggedIn) return dispatch('validate')
-
+  async signIn({ commit }, { email, password } = {}) {
     try {
       const userData = await axios({
         method: 'post',
-        url: `${backendURL}user/signin`,
-        data: { emailAddress, userPassword },
+        url: `${backendURL}customers/signin`,
+        data: { email, password },
       })
       const user = userData.data
       commit('SET_CURRENT_USER_AUTHTOKEN', user)
@@ -63,22 +50,8 @@ export const actions = {
     }
   },
 
-
-
-  // Logs out the current user.
-  logOut({ commit }) {
-    // commit('SET_CURRENT_USER', null)
+  signOut({ commit }) {
     commit('SET_CURRENT_USER_AUTHTOKEN', null)
-  },
-
-  // Validates the current user's token and refreshes it
-  // with new data from the API.
-  validate({ commit, state }) {
-    if (!state.authToken) return Promise.resolve(null)
-
-    return new Promise((resolve, reject) => {
-      resolve(true)
-    })
   },
 }
 

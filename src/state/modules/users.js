@@ -1,37 +1,147 @@
 import axios from 'axios'
+const backendURL = process.env.VUE_APP_BACKEND_SERVER
 
-export const state = {
-  cached: [],
-}
+export const state = {}
 
 export const getters = {}
 
-export const mutations = {
-  CACHE_USER(state, newUser) {
-    state.cached.push(newUser)
-  },
-}
+export const mutations = {}
 
 export const actions = {
-  fetchUser({ commit, state, rootState }, { username }) {
-    // 1. Check if we already have the user as a current user.
-    const { currentUser } = rootState.auth
-    if (currentUser && currentUser.username === username) {
-      return Promise.resolve(currentUser)
+  async registration({ commit }, { data }) {
+    try {
+      const result = await axios({
+        method: 'post',
+        url: `${backendURL}customers/registration`,
+        data,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw error
     }
-
-    // 2. Check if we've already fetched and cached the user.
-    const matchedUser = state.cached.find((user) => user.username === username)
-    if (matchedUser) {
-      return Promise.resolve(currentUser)
+  },
+  async verifyEmail({ commit }, { token }) {
+    try {
+      const result = await axios({
+        method: 'post',
+        url: `${backendURL}customers/verifyemail`,
+        data: { token },
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw error
     }
-
-    // 3. Fetch the user from the API and cache it in case
-    //    we need it again in the future.
-    return axios.get(`/api/users/${username}`).then((response) => {
-      const user = response.data
-      commit('CACHE_USER', user)
-      return user
-    })
+  },
+  async changePassword({ commit }, { data }) {
+    try {
+      const result = await axios({
+        method: 'put',
+        url: `${backendURL}customers/changepassword`,
+        data,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw error
+    }
+  },
+  async forgotPassword({ commit }, { data }) {
+    try {
+      const result = await axios({
+        method: 'post',
+        url: `${backendURL}customers/forgotpassword`,
+        data,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw error
+    }
+  },
+  async resetPassword({ commit }, { data }) {
+    try {
+      const result = await axios({
+        method: 'put',
+        url: `${backendURL}customers/resetpassword`,
+        data,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw error
+    }
+  },
+  async getProfile({ commit }, { data }) {
+    try {
+      const result = await axios({
+        method: 'get',
+        url: `${backendURL}customers/profile`,
+        data,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw error
+    }
+  },
+  async updateProfile({ commit }, { data }) {
+    try {
+      const result = await axios({
+        method: 'patch',
+        url: `${backendURL}customers/profile`,
+        data,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw error
+    }
+  },
+  async uploadImage({ commit }, { data }) {
+    try {
+      const result = await axios({
+        method: 'post',
+        url: `${backendURL}images`,
+        data,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw error
+    }
   },
 }
