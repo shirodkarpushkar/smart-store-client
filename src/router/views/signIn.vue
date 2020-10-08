@@ -62,8 +62,8 @@
 <script>
 export default {
   page: {
-    title: 'Home',
-    meta: [{ name: 'description', content: 'Home' }],
+    title: 'signIn',
+    meta: [{ name: 'description', content: 'signIn' }],
   },
   components: {},
   data() {

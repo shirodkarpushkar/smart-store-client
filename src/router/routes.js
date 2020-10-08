@@ -9,7 +9,7 @@ export default [
   {
     path: '/signin',
     name: 'signin',
-    component: () => lazyLoadView(import('@views/signin')),
+    component: () => lazyLoadView(import('@views/signIn')),
   },
 
   {
