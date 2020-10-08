@@ -3,19 +3,34 @@ import store from '@state/store'
 export default [
   {
     path: '/',
-    redirect: 'login',
+    redirect: 'signin',
   },
 
   {
-    path: '/login',
-    name: 'login',
-    component: () => lazyLoadView(import('@views/login')),
+    path: '/signin',
+    name: 'signin',
+    component: () => lazyLoadView(import('@views/signin')),
   },
 
   {
     path: '/register',
     name: 'register',
     component: () => lazyLoadView(import('@views/register')),
+  },
+  {
+    path: '/forgot-password',
+    name: 'forgotPassword',
+    component: () => lazyLoadView(import('@views/forgotPassword')),
+  },
+  {
+    path: '/reset-password',
+    name: 'resetPassword',
+    component: () => lazyLoadView(import('@views/resetPassword')),
+  },
+  {
+    path: '/verifyemail',
+    name: 'verifyEmail',
+    component: () => lazyLoadView(import('@views/verifyEmail')),
   },
   /* name has different to reuse the same component */
 
