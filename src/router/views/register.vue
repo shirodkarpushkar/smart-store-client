@@ -1,6 +1,66 @@
 <template>
-  <a-form :form="form" class="register-form" @submit="handleSubmit">
+  <a-form :form="form" class="register-form" @submit.prevent="handleSubmit">
     <h3>Register</h3>
+    <a-upload
+      name="avatar"
+      list-type="picture-card"
+      class="avatar-uploader"
+      :custom-request="handleUpload"
+      :show-upload-list="false"
+      :before-upload="beforeUpload"
+    >
+      <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
+      <div v-else>
+        <a-icon :type="imageLoading ? 'loading' : 'plus'" />
+        <div class="ant-upload-text">
+          Upload
+        </div>
+      </div>
+    </a-upload>
+    <a-form-item v-bind="formItemLayout">
+      <span slot="label">
+        First Name&nbsp;
+        <a-tooltip title="Your First Name">
+          <a-icon type="question-circle-o" />
+        </a-tooltip>
+      </span>
+      <a-input
+        v-decorator="[
+          'firstName',
+          {
+            rules: [
+              {
+                required: true,
+                message: 'Please input your First Name!',
+                whitespace: true,
+              },
+            ],
+          },
+        ]"
+      />
+    </a-form-item>
+    <a-form-item v-bind="formItemLayout">
+      <span slot="label">
+        Last Name&nbsp;
+        <a-tooltip title="Your Last Name">
+          <a-icon type="question-circle-o" />
+        </a-tooltip>
+      </span>
+      <a-input
+        v-decorator="[
+          'firstName',
+          {
+            rules: [
+              {
+                required: true,
+                message: 'Please input your Last Name!',
+                whitespace: true,
+              },
+            ],
+          },
+        ]"
+      />
+    </a-form-item>
     <a-form-item v-bind="formItemLayout" label="E-mail">
       <a-input
         v-decorator="[
@@ -30,9 +90,6 @@
                 required: true,
                 message: 'Please input your password!',
               },
-              {
-                validator: validateToNextPassword,
-              },
             ],
           },
         ]"
@@ -49,9 +106,6 @@
                 required: true,
                 message: 'Please confirm your password!',
               },
-              {
-                validator: compareToFirstPassword,
-              },
             ],
           },
         ]"
@@ -59,21 +113,15 @@
         @blur="handleConfirmBlur"
       />
     </a-form-item>
-    <a-form-item v-bind="formItemLayout">
-      <span slot="label">
-        Nickname&nbsp;
-        <a-tooltip title="What do you want others to call you?">
-          <a-icon type="question-circle-o" />
-        </a-tooltip>
-      </span>
+    <a-form-item v-bind="formItemLayout" label="Address Line 1">
       <a-input
         v-decorator="[
-          'nickname',
+          'AddressLine1',
           {
             rules: [
               {
                 required: true,
-                message: 'Please input your nickname!',
+                message: 'This field is required!',
                 whitespace: true,
               },
             ],
@@ -81,97 +129,58 @@
         ]"
       />
     </a-form-item>
-    <a-form-item v-bind="formItemLayout" label="Habitual Residence">
-      <a-cascader
-        v-decorator="[
-          'residence',
-          {
-            initialValue: ['zhejiang', 'hangzhou', 'xihu'],
-            rules: [
-              {
-                type: 'array',
-                required: true,
-                message: 'Please select your habitual residence!',
-              },
-            ],
-          },
-        ]"
-        :options="residences"
-      />
-    </a-form-item>
-    <a-form-item v-bind="formItemLayout" label="Phone Number">
+    <a-form-item v-bind="formItemLayout" label="Address Line 2">
       <a-input
         v-decorator="[
-          'phone',
+          'AddressLine2',
           {
             rules: [
-              { required: true, message: 'Please input your phone number!' },
+              {
+                required: true,
+                message: 'This field is required!',
+                whitespace: true,
+              },
             ],
           },
         ]"
-        style="width: 100%"
-      >
-        <a-select
-          slot="addonBefore"
-          v-decorator="['prefix', { initialValue: '86' }]"
-          style="width: 70px"
-        >
-          <a-select-option value="86">
-            +86
-          </a-select-option>
-          <a-select-option value="87">
-            +87
-          </a-select-option>
-        </a-select>
-      </a-input>
+      />
     </a-form-item>
-    <a-form-item v-bind="formItemLayout" label="Website">
-      <a-auto-complete
+    <a-form-item v-bind="formItemLayout" label="City">
+      <a-input
         v-decorator="[
-          'website',
-          { rules: [{ required: true, message: 'Please input website!' }] },
-        ]"
-        placeholder="website"
-        @change="handleWebsiteChange"
-      >
-        <template slot="dataSource">
-          <a-select-option v-for="website in autoCompleteResult" :key="website">
-            {{ website }}
-          </a-select-option>
-        </template>
-        <a-input />
-      </a-auto-complete>
-    </a-form-item>
-    <a-form-item
-      v-bind="formItemLayout"
-      label="Captcha"
-      extra="We must make sure that your are a human."
-    >
-      <a-row :gutter="8">
-        <a-col :span="12">
-          <a-input
-            v-decorator="[
-              'captcha',
+          'city',
+          {
+            rules: [
               {
-                rules: [
-                  {
-                    required: true,
-                    message: 'Please input the captcha you got!',
-                  },
-                ],
+                required: true,
+                message: 'This field is required!',
+                whitespace: true,
               },
-            ]"
-          />
-        </a-col>
-        <a-col :span="12">
-          <a-button>Get captcha</a-button>
-        </a-col>
-      </a-row>
+            ],
+          },
+        ]"
+      />
+    </a-form-item>
+    <a-form-item v-bind="formItemLayout" label="State">
+      <a-input
+        v-decorator="[
+          'state',
+          {
+            rules: [
+              {
+                required: true,
+                message: 'This field is required!',
+                whitespace: true,
+              },
+            ],
+          },
+        ]"
+      />
     </a-form-item>
     <a-form-item v-bind="tailFormItemLayout">
       <a-checkbox v-decorator="['agreement', { valuePropName: 'checked' }]">
         I have read the
-        <a href="">
+        <a href="" @click.prevent="">
           agreement
         </a>
       </a-checkbox>
@@ -185,51 +194,17 @@
 </template>
 
 <script>
-const residences = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-]
-
+import { userMethods } from '@state/helpers'
 export default {
   data() {
     return {
       confirmDirty: false,
-      residences,
       autoCompleteResult: [],
       formItemLayout: {
         labelCol: {
           xs: { span: 24 },
           sm: { span: 8 },
+
         },
         wrapperCol: {
           xs: { span: 24 },
@@ -248,14 +223,18 @@ export default {
           },
         },
       },
+      imageUrl: '',
+      imageLoading: false,
+      image: null,
+      imageBaseURL:process.env.VUE_APP_BACKEND_SERVER
     }
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'register' })
   },
   methods: {
+    ...userMethods,
     handleSubmit(e) {
-      e.preventDefault()
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           console.log('Received values of form: ', values)
@@ -266,38 +245,39 @@ export default {
       const value = e.target.value
       this.confirmDirty = this.confirmDirty || !!value
     },
-    compareToFirstPassword(rule, value, callback) {
-      const form = this.form
-      if (value && value !== form.getFieldValue('password')) {
-        callback('Two passwords that you enter is inconsistent!')
-      } else {
-        callback()
+    beforeUpload(file) {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png'
+      if (!isJpgOrPng) {
+        this.$message.error('You can only upload JPG/PNG file!')
       }
+      const isLt2M = file.size / 1024 / 1024 < 2
+      if (!isLt2M) {
+        this.$message.error('Image must smaller than 2MB!')
+      }
+      this.image = file
+      return isJpgOrPng && isLt2M
     },
-    validateToNextPassword(rule, value, callback) {
-      const form = this.form
-      if (value && this.confirmDirty) {
-        form.validateFields(['confirm'], { force: true })
-      }
-      callback()
-    },
-    handleWebsiteChange(value) {
-      let autoCompleteResult
-      if (!value) {
-        autoCompleteResult = []
-      } else {
-        autoCompleteResult = ['.com', '.org', '.net'].map(
-          (domain) => `${value}${domain}`
-        )
-      }
-      this.autoCompleteResult = autoCompleteResult
+    handleUpload(info) {
+      const formData = new FormData()
+      formData.append('image', this.image)
+      this.imageLoading = true
+      this.uploadImage({ data: formData })
+        .then((res) => {
+          this.imageLoading = false
+          this.imageUrl = this.imageBaseURL + res.result.destination
+           this.$message.success(res.status.message)
+        })
+        .catch((err) => {
+          console.log('handleUpload -> err', err)
+          this.imageLoading = false
+          this.$message.error(err.message)
+        })
     },
   },
 }
 </script>
 
 <style scoped>
-
 .register-form {
   max-width: 40rem;
   padding: 2rem;

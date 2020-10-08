@@ -133,6 +133,9 @@ export const actions = {
         method: 'post',
         url: `${backendURL}images`,
         data,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       })
       const response = result.data
       if (response.status.code === 200) {
