@@ -12,7 +12,7 @@ export const actions = {
     try {
       const result = await axios({
         method: 'post',
-        url: `${backendURL}customers/registration`,
+        url: `${backendURL}customers/register`,
         data,
       })
       const response = result.data

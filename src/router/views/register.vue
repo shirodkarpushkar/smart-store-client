@@ -11,7 +11,12 @@
           :show-upload-list="false"
           :before-upload="beforeUpload"
         >
-          <img v-if="imageUrl" :src="imageUrl" alt="avatar" class="avatar" />
+          <img
+            v-if="uploadedImage"
+            :src="imageBaseURL + uploadedImage.destination"
+            alt="avatar"
+            class="avatar"
+          />
           <div v-else>
             <a-icon :type="imageLoading ? 'loading' : 'plus'" />
             <div class="ant-upload-text">
@@ -65,10 +70,20 @@
           :class="{ 'has-error': $v.user.email.$error }"
         >
           <a-input v-model="user.email" @input="$v.user.email.$touch" />
-          <div v-if="!$v.user.email.required && $v.user.email.$dirty" class="ant-form-explain">
+          <div
+            v-if="!$v.user.email.required && $v.user.email.$dirty"
+            class="ant-form-explain"
+          >
             Email is required.
           </div>
-          <div v-if="!$v.user.email.email && $v.user.email.required && $v.user.email.$dirty" class="ant-form-explain">
+          <div
+            v-if="
+              !$v.user.email.email &&
+                $v.user.email.required &&
+                $v.user.email.$dirty
+            "
+            class="ant-form-explain"
+          >
             Enter a valid email.
           </div>
         </a-form-item>
@@ -94,10 +109,23 @@
             type="password"
             @input="$v.user.confirmPassword.$touch"
           />
-          <div v-if="!$v.user.confirmPassword.required && $v.user.confirmPassword.$dirty " class="ant-form-explain">
+          <div
+            v-if="
+              !$v.user.confirmPassword.required &&
+                $v.user.confirmPassword.$dirty
+            "
+            class="ant-form-explain"
+          >
             Pls enter your password again.
           </div>
-          <div v-if="!$v.user.confirmPassword.sameAsPassword && $v.user.confirmPassword.required && $v.user.confirmPassword.$dirty " class="ant-form-explain">
+          <div
+            v-if="
+              !$v.user.confirmPassword.sameAsPassword &&
+                $v.user.confirmPassword.required &&
+                $v.user.confirmPassword.$dirty
+            "
+            class="ant-form-explain"
+          >
             Password is inconsistent.
           </div>
         </a-form-item>
@@ -140,6 +168,15 @@
             This field is required
           </div>
         </a-form-item>
+        <a-form-item
+          label="Zipcode"
+          :class="{ 'has-error': $v.user.zipcode.$error }"
+        >
+          <a-input v-model="user.zipcode" @input="$v.user.zipcode.$touch" />
+          <div v-if="$v.user.zipcode.$error" class="ant-form-explain">
+            This field is required
+          </div>
+        </a-form-item>
         <a-form-item :class="{ 'has-error': $v.user.agreement.$error }">
           <a-checkbox v-model="user.agreement">
             I have read the
@@ -152,7 +189,7 @@
           </div>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" html-type="submit">
+          <a-button type="primary" html-type="submit" :loading="submitLoader">
             Register
           </a-button>
         </a-form-item>
@@ -177,6 +214,7 @@ export default {
         addressLine2: '',
         city: '',
         state: '',
+        zipcode: '',
         agreement: true,
       },
       formItemLayout: {
@@ -189,8 +227,9 @@ export default {
           sm: { span: 16 },
         },
       },
+      submitLoader: false,
 
-      imageUrl: '',
+      uploadedImage: null,
       imageLoading: false,
       image: null,
       imageBaseURL: process.env.VUE_APP_BACKEND_SERVER,
@@ -201,7 +240,33 @@ export default {
     handleSubmit(e) {
       this.$v.$touch()
       if (!this.$v.$invalid) {
-        console.log('handleSubmit -> e', e, this.user)
+        this.user.avatar = this.uploadedImage.id
+        this.submitLoader = true
+        this.registration({ data: this.user })
+          .then((res) => {
+            console.log('handleSubmit -> res', res)
+            let self = this
+            this.$success({
+              title: 'Registration Successful!',
+              content: (
+                <div>
+                  <p>
+                    Congratulations! You have been successfully registered. To
+                    activate your account check your email and confirm your
+                    registration.
+                  </p>
+                </div>
+              ),
+              onOk() {
+                self.$router.push({name:'signin'})
+              },
+            })
+            this.submitLoader = false
+          })
+          .catch((err) => {
+            this.$message.error(err.message ? err.message : err.status.message)
+            this.submitLoader = false
+          })
       }
     },
     beforeUpload(file) {
@@ -223,7 +288,7 @@ export default {
       this.uploadImage({ data: formData })
         .then((res) => {
           this.imageLoading = false
-          this.imageUrl = this.imageBaseURL + res.result.destination
+          this.uploadedImage = res.result
           this.$message.success(res.status.message)
         })
         .catch((err) => {
@@ -237,13 +302,14 @@ export default {
     user: {
       firstName: { required },
       lastName: { required },
-      email: { required ,email},
+      email: { required, email },
       password: { required },
       confirmPassword: { required, sameAsPassword: sameAs('password') },
       addressLine1: { required },
       addressLine2: { required },
       city: { required },
       state: { required },
+      zipcode: { required },
       agreement: { sameAs: sameAs(() => true) },
     },
   },

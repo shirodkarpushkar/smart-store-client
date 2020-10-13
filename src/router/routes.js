@@ -28,7 +28,7 @@ export default [
     component: () => lazyLoadView(import('@views/resetPassword')),
   },
   {
-    path: '/verifyemail',
+    path: '/verify',
     name: 'verifyEmail',
     component: () => lazyLoadView(import('@views/verifyEmail')),
   },
