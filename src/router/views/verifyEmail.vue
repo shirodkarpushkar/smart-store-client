@@ -1,3 +1,10 @@
+
+<template>
+  <div>
+    Verifyemail
+  </div>
+</template>
+
 <script>
 
 
@@ -10,13 +17,7 @@ export default {
 }
 </script>
 
-<template>
-  <div>
-    Verifyemail
-  </div>
-</template>
 
 <style scoped>
 
 </style>
-
