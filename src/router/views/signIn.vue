@@ -11,7 +11,7 @@
         v-decorator="[
           'userName',
           {
-            rules: [{ required: true, message: 'Please input your username!' }],
+            rules: [{ required: true, message: 'Please input youe email!' }],
           },
         ]"
         placeholder="Username"
@@ -67,11 +67,9 @@ export default {
   },
   components: {},
   data() {
-    return {}
+    return { form: this.$form.createForm(this, { name: 'normal_login' }) }
   },
-  beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'normal_login' })
-  },
+
   methods: {
     handleSubmit(e) {
       this.form.validateFields((err, values) => {
