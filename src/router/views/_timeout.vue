@@ -1,5 +1,13 @@
+<template>
+ <a-result status="500" title="500" sub-title="Sorry, the server is wrong.">
+    <template #extra>
+      <a-button type="primary">
+        Back Home
+      </a-button>
+    </template>
+  </a-result>
+</template>
 <script>
-import Layout from '@layouts/main'
 
 export default {
   page: {
@@ -8,18 +16,11 @@ export default {
       { name: 'description', content: 'The page timed out while loading.' },
     ],
   },
-  components: { Layout },
+  components: {  },
 }
 </script>
 
-<template>
-  <Layout>
-    <h1 :class="$style.title">
-      The page timed out while loading. Are you sure you're still connected to
-      the Internet?
-    </h1>
-  </Layout>
-</template>
+
 
 <style lang="scss" module>
 .title {
