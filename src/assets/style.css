@@ -1,0 +1,14 @@
+.card-form {
+  padding: 2rem;
+  max-width: 70vh;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+#components-form-demo-normal-login .card-form-forgot {
+  float: right;
+}
+#components-form-demo-normal-login .card-form-button {
+  width: 100%;
+}

@@ -2,7 +2,7 @@
   <a-form
     id="components-form-demo-normal-login"
     :form="form"
-    class="login-form"
+    class="card-form"
     @submit.prevent="handleSubmit"
   >
     <h3>Login</h3>
@@ -45,10 +45,10 @@
       >
         Remember me
       </a-checkbox>
-      <a class="login-form-forgot" href="">
+      <router-link class="card-form-forgot" :to="{ name: 'forgotPassword' }">
         Forgot password
-      </a>
-      <a-button type="primary" html-type="submit" class="login-form-button">
+      </router-link>
+      <a-button type="primary" html-type="submit" class="card-form-button">
         Log in
       </a-button>
       Or
@@ -81,19 +81,4 @@ export default {
   },
 }
 </script>
-<style scoped>
-.login-form {
-  max-width: 70vh;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  margin: 2rem auto;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-}
-#components-form-demo-normal-login .login-form-forgot {
-  float: right;
-}
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
-}
-</style>
+<style scoped></style>

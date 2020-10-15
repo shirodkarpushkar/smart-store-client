@@ -189,9 +189,14 @@
           </div>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" html-type="submit" :loading="submitLoader">
-            Register
-          </a-button>
+          <a-row type="flex" justify="space-between" align="middle">
+            <a-button type="primary" html-type="submit" :loading="submitLoader">
+              Register
+            </a-button>
+            <router-link to="/signin">
+              I'm already a member
+            </router-link>
+          </a-row>
         </a-form-item>
       </a-col>
     </a-row>
@@ -258,7 +263,7 @@ export default {
                 </div>
               ),
               onOk() {
-                self.$router.push({name:'signin'})
+                self.$router.push({ name: 'signin' })
               },
             })
             this.submitLoader = false

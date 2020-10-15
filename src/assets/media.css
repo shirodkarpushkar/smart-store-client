@@ -1,0 +1,19 @@
+@media (max-width: 1199.98px) {
+  .card-form {
+    max-width: 70vh;
+    margin: 2rem auto;
+  }
+}
+@media (max-width: 991.98px) {
+  .card-form {
+    max-width: 80vh;
+    margin: 2rem auto;
+  }
+}
+@media (max-width: 575.98px) {
+  .card-form {
+    width: 100%;
+    margin: 5rem auto;
+    box-shadow: none;
+  }
+}
