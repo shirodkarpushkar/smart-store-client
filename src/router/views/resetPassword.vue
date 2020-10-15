@@ -46,7 +46,12 @@
       />
     </a-form-item>
     <a-form-item>
-      <a-button type="primary" html-type="submit" class="card-form-button">
+      <a-button
+        :loading="loading"
+        type="primary"
+        html-type="submit"
+        class="card-form-button"
+      >
         Reset Password
       </a-button>
       <router-link :to="{ name: 'signin' }">
@@ -56,6 +61,7 @@
   </a-form>
 </template>
 <script>
+import { userMethods } from '@state/helpers'
 export default {
   page: {
     title: 'ResetPassword',
@@ -66,14 +72,42 @@ export default {
     return {
       confirmDirty: false,
       form: this.$form.createForm(this, { name: 'reset_password' }),
+      token: '',
+      loading: false,
+    }
+  },
+  created() {
+    if (this.$route.query) {
+      this.token = this.$route.query.token
     }
   },
   methods: {
+    ...userMethods,
     handleSubmit(e) {
       e.preventDefault()
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          let data = { token: this.token, newPassword: values.password }
+          this.loading = true
+          let self = this
+          this.resetPassword({ data })
+            .then((res) => {
+              this.$success({
+                title: 'Password Reset Success!',
+                content:
+                  'Your password was changed successfully! Go to login page and enter your newly created password',
+                onOk() {
+                  self.$router.push({ name: 'signin' })
+                },
+              })
+              this.loading = false
+            })
+            .catch((err) => {
+              this.$message.error(
+                err.message ? err.message : err.status.message
+              )
+              this.loading = false
+            })
         }
       })
     },

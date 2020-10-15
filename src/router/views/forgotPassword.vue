@@ -23,7 +23,12 @@
       </a-input>
     </a-form-item>
     <a-form-item>
-      <a-button type="primary" html-type="submit" class="card-form-button">
+      <a-button
+        :loading="loading"
+        type="primary"
+        html-type="submit"
+        class="card-form-button"
+      >
         Recover
       </a-button>
       <router-link :to="{ name: 'signin' }">
@@ -33,24 +38,51 @@
   </a-form>
 </template>
 <script>
+import { userMethods } from '@state/helpers'
 export default {
   page: {
     title: 'ForgotPassword',
     meta: [{ name: 'description', content: 'ForgotPassword' }],
   },
   components: {},
-   data() {
-    return { form: this.$form.createForm(this, { name: 'forgot_password' }) }
+  data() {
+    return {
+      form: this.$form.createForm(this, { name: 'forgot_password' }),
+      loading: false,
+    }
   },
-  methods:{
+  methods: {
+    ...userMethods,
     handleSubmit(e) {
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values)
+          this.loading = true
+          let data = {
+            email: values.email,
+          }
+          let self = this
+          this.forgotPassword({ data })
+            .then((res) => {
+              this.$success({
+                title: 'Email Sent!',
+                content:
+                  ' An email was sent to your registered email address. Please check your email',
+                onOk() {
+                  self.$router.push({ name: 'signin' })
+                },
+              })
+              this.loading = false
+            })
+            .catch((err) => {
+              this.$message.error(
+                err.message ? err.message : err.status.message
+              )
+              this.loading = false
+            })
         }
       })
     },
-  }
+  },
 }
 </script>
 
