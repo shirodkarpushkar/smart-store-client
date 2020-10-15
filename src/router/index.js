@@ -45,21 +45,19 @@ router.beforeEach((routeTo, routeFrom, next) => {
   // Check if auth is required on this route
   // (including nested routes).
   const authRequired = routeTo.matched.some((route) => route.meta.authRequired)
-
-  // If auth isn't required for the route, just continue.
-  if (!authRequired || routeTo.name === 'logout') return next()
-
-  // If auth is required and the user is logged in...
-  if (store.getters['auth/loggedIn']) {
-    return store.dispatch('auth/validate').then((validUser) => {
-      console.log('TCL: validUser', validUser)
-      validUser ? next() : redirectToLogin()
-    })
+  if (authRequired) {
+    const authUser = store.getters['auth/getAuthenticationToken']
+    if (!authUser || !authUser.result.token) {
+      redirectToLogin()
+    } else {
+      next()
+    }
+  } else {
+    next()
   }
 
   // If auth is required and the user is NOT currently logged in,
   // redirect to login.
-  redirectToLogin()
 
   function redirectToLogin() {
     // Pass the original route to the login component

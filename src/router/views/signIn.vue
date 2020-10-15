@@ -94,6 +94,7 @@ export default {
                 message: 'Success',
                 description: 'User Logged in successfully.',
               })
+              this.$router.push({name:'home'})
               this.buttonLoader = false
             })
             .catch((err) => {

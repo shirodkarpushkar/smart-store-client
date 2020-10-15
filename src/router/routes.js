@@ -1,6 +1,7 @@
 import store from '@state/store'
 
 export default [
+  /* full page routes */
   {
     path: '/',
     redirect: 'signin',
@@ -32,39 +33,30 @@ export default [
     name: 'verifyEmail',
     component: () => lazyLoadView(import('@views/verifyEmail')),
   },
-  /* name has different to reuse the same component */
-
   {
     path: '/404',
     name: '404',
     component: require('@views/_404').default,
-    // Allows props to be passed to the 404 page through route
-    // params, such as `resource` to define what wasn't found.
     props: true,
   },
-  // Redirect any unmatched routes to the 404 page. This may
-  // require some server configuration to work in production:
-  // https://router.vuejs.org/en/essentials/history-mode.html#example-server-configurations
+  /* user protected routes */
+  {
+    path: '/home',
+    name: 'home',
+    component: () => lazyLoadView(import('@views/customer/home')),
+    meta: {
+      authRequired: true,
+    },
+  },
+
+  /* user protected routes */
+
   {
     path: '*',
     redirect: '404',
   },
 ]
 
-// Lazy-loads view components, but with better UX. A loading view
-// will be used if the component takes a while to load, falling
-// back to a timeout view in case the page fails to load. You can
-// use this component to lazy-load a route with:
-//
-// component: () => lazyLoadView(import('@views/my-view'))
-//
-// NOTE: Components loaded with this strategy DO NOT have access
-// to in-component guards, such as beforeRouteEnter,
-// beforeRouteUpdate, and beforeRouteLeave. You must either use
-// route-level guards instead or lazy-load the component directly:
-//
-// component: () => import('@views/my-view')
-//
 function lazyLoadView(AsyncView) {
   const AsyncHandler = () => ({
     component: AsyncView,
