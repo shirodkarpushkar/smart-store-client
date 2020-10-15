@@ -41,11 +41,14 @@ export const actions = {
         data: { email, password },
       })
       const user = userData.data
-      commit('SET_CURRENT_USER_AUTHTOKEN', user)
+      if (user.status.code === 200) {
+        commit('SET_CURRENT_USER_AUTHTOKEN', user)
 
-      return user
+        return user
+      } else {
+        throw user
+      }
     } catch (error) {
-      console.log('TCL: error', error)
       throw error
     }
   },
@@ -69,6 +72,6 @@ function saveState(key, state) {
 
 function setDefaultAuthHeaders(state) {
   axios.defaults.headers.common['auth'] = state.authToken
-    ? state.authToken.result[0].token
+    ? state.authToken.result.token
     : ''
 }

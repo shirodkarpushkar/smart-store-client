@@ -5,16 +5,13 @@
 </template>
 
 <script>
-
-
 export default {
   page: {
     title: 'Loading page...',
     meta: [{ name: 'description', content: 'Loading page...' }],
   },
-  components: {  },
+  components: {},
 }
 </script>
-
 
 <style scoped></style>
