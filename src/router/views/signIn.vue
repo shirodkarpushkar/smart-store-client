@@ -11,7 +11,10 @@
         v-decorator="[
           'userName',
           {
-            rules: [{ required: true, message: 'Please input youe email!' }],
+            rules: [
+              { required: true, message: 'Please input youe email!' },
+              { type: 'email', message: 'Enter a valid email!' },
+            ],
           },
         ]"
         placeholder="Username"
