@@ -93,14 +93,16 @@ export default {
               this.$notification.success({
                 message: 'Success',
                 description: 'User Logged in successfully.',
+                placement: 'bottomright',
               })
-              this.$router.push({name:'home'})
+              this.$router.push({ name: 'home' })
               this.buttonLoader = false
             })
             .catch((err) => {
               this.$notification.error({
                 message: 'Error',
                 description: err.message ? err.message : err.status.message,
+                placement: 'bottomright',
               })
               this.buttonLoader = false
             })

@@ -12,15 +12,29 @@
         <h3 class="brand-title">Smart Store <small>v1.0</small> </h3></div
       >
       <a-menu mode="horizontal" class="nav-menu">
-        <a-menu-item> <a-icon type="bell" />Notifications </a-menu-item>
+        <a-menu-item> <a-icon type="heart" />Favourites </a-menu-item>
         <a-menu-item>
           <a-icon :size="64" type="shopping-cart" /> Orders
         </a-menu-item>
-        <a-menu-item>
-          <a-avatar
-            style="margin-top: -5px;"
-            :src="imgBaseUrl + user.result.avatar"
-          />
+        <a-menu-item v-if="user">
+          <a-dropdown>
+            <a-avatar
+              style="margin-top: -5px;"
+              :src="imgBaseUrl + user.result.avatar"
+            />
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <h4> {{ user.result.firstName }} {{ user.result.lastName }}</h4>
+                <p> {{ user.result.email }}</p>
+              </a-menu-item>
+              <a-menu-item
+                ><a-icon type="setting" />Account Settings</a-menu-item
+              >
+              <a-menu-item><a-icon type="read" />About Us</a-menu-item>
+              <a-menu-item><a-icon type="phone" />Contact Us</a-menu-item>
+              <a-menu-item @click="signOutUser"><a-icon type="logout" />Sign Out</a-menu-item>
+            </a-menu>
+          </a-dropdown>
         </a-menu-item>
       </a-menu>
     </a-layout-header>
@@ -45,7 +59,7 @@
 </template>
 <script>
 import layoutFooter from '@layouts/footer'
-import { authGetters } from '@state/helpers'
+import { authGetters, authMethods } from '@state/helpers'
 export default {
   components: {
     layoutFooter,
@@ -64,11 +78,16 @@ export default {
 
   methods: {
     ...authGetters,
+    ...authMethods,
     openDrawer() {
       this.showDrawer = true
     },
     onClose() {
       this.showDrawer = false
+    },
+    signOutUser() {
+      this.$router.push({ name: 'signin' })
+      this.signOut()
     },
   },
 }
@@ -83,6 +102,7 @@ export default {
   height: 2rem;
   float: left;
   object-fit: contain;
+  margin-top: -3px;
 }
 .brand-img img {
   width: 100%;
