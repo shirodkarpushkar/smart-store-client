@@ -47,6 +47,7 @@
     </a-layout-content>
     <layout-footer></layout-footer>
     <a-drawer
+      v-if="user"
       title="Smart Store v1.0"
       placement="left"
       :closable="false"
@@ -143,6 +144,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
