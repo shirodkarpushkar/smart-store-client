@@ -3,50 +3,63 @@ import store from '@state/store'
 export default [
   /* full page routes */
   {
-    path: '/',
-    redirect: 'signin',
-  },
+    path: '',
+    component: () => lazyLoadView(import('@layouts/FullPage')),
+    children: [
+      {
+        path: '/',
+        redirect: 'signin',
+      },
 
-  {
-    path: '/signin',
-    name: 'signin',
-    component: () => lazyLoadView(import('@views/signIn')),
-  },
+      {
+        path: '/signin',
+        name: 'signin',
+        component: () => lazyLoadView(import('@views/signIn')),
+      },
 
-  {
-    path: '/register',
-    name: 'register',
-    component: () => lazyLoadView(import('@views/register')),
-  },
-  {
-    path: '/forgot-password',
-    name: 'forgotPassword',
-    component: () => lazyLoadView(import('@views/forgotPassword')),
-  },
-  {
-    path: '/reset-password',
-    name: 'resetPassword',
-    component: () => lazyLoadView(import('@views/resetPassword')),
-  },
-  {
-    path: '/verify',
-    name: 'verifyEmail',
-    component: () => lazyLoadView(import('@views/verifyEmail')),
-  },
-  {
-    path: '/404',
-    name: '404',
-    component: require('@views/_404').default,
-    props: true,
+      {
+        path: '/register',
+        name: 'register',
+        component: () => lazyLoadView(import('@views/register')),
+      },
+      {
+        path: '/forgot-password',
+        name: 'forgotPassword',
+        component: () => lazyLoadView(import('@views/forgotPassword')),
+      },
+      {
+        path: '/reset-password',
+        name: 'resetPassword',
+        component: () => lazyLoadView(import('@views/resetPassword')),
+      },
+      {
+        path: '/verify',
+        name: 'verifyEmail',
+        component: () => lazyLoadView(import('@views/verifyEmail')),
+      },
+      {
+        path: '/404',
+        name: '404',
+        component: require('@views/_404').default,
+        props: true,
+      },
+    ],
   },
   /* user protected routes */
+
   {
-    path: '/home',
-    name: 'home',
-    component: () => lazyLoadView(import('@views/customer/home')),
-    meta: {
-      authRequired: true,
-    },
+    path: '',
+    component: () => lazyLoadView(import('@layouts/userLayout')),
+    children: [
+      {
+        path: '/home',
+        name: 'home',
+        component: () => lazyLoadView(import('@views/customer/home')),
+        meta: {
+          authRequired: true,
+        },
+      },
+    ],
   },
 
   /* user protected routes */
