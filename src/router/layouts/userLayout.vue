@@ -144,33 +144,5 @@ export default {
 </script>
 
 <style scoped>
-.brand {
-  display: flex;
-}
-.brand-img {
-  width: 5rem;
-  height: 2rem;
-  float: left;
-  object-fit: contain;
-  margin-top: -3px;
-}
-.brand-img img {
-  width: 100%;
-  height: 100%;
-}
-.brand-title {
-  float: left;
-  margin: 0;
-}
-.brand-drawer {
-  margin: 0 0 0 1rem;
-}
-.drawer-menu {
-  border: none;
-  margin-left: -1.5rem;
-}
-.ant-menu-item .anticon + span, .ant-menu-submenu-title .anticon + span {
-  font-weight: 500;
 
-}
 </style>
