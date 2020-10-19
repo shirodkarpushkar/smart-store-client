@@ -27,6 +27,7 @@ export const userMethods = mapActions('users', [
 export const productMethods = mapActions('products', [
   'getAllProducts',
   'getCustomerProducts',
+  'getFavoriteProducts',
   'getProductById',
   'markProductFavorite',
   'unmarkProductFavorite',

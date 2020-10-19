@@ -6,13 +6,19 @@
           <a-icon type="menu" @click="openDrawer" />
         </div>
 
-        <div class="brand-img">
+        <div class="brand-img cursor-pointer"  @click="gotoRoute({ name: 'home' })">
           <img src="@assets/logo.svg" alt="" />
         </div>
-        <h3 class="brand-title">Smart Store <small>v1.0</small> </h3></div
+        <h3 class="brand-title cursor-pointer"   @click="gotoRoute({ name: 'home' })">Smart Store <small>v1.0</small> </h3></div
       >
       <a-menu mode="horizontal" class="nav-menu">
-        <a-menu-item> <a-icon type="heart" />Favourites </a-menu-item>
+        <a-menu-item
+          :class="{
+            'ant-menu-item-selected': currentRoute({ name: 'favorites' }),
+          }"
+          @click="gotoRoute({ name: 'favorites' })"
+          ><a-icon type="heart" />Favourites
+        </a-menu-item>
         <a-menu-item>
           <a-icon :size="64" type="shopping-cart" /> Orders
         </a-menu-item>
@@ -139,6 +145,16 @@ export default {
     signOutUser() {
       this.$router.push({ name: 'signin' })
       this.signOut()
+    },
+    currentRoute(route) {
+      if (route.name === this.$route.name) {
+        return true
+      } else {
+        return false
+      }
+    },
+    gotoRoute(route) {
+      this.$router.push(route)
     },
   },
 }

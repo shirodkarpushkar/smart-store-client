@@ -56,6 +56,22 @@ export const actions = {
       throw errorHandler(error)
     }
   },
+  async getFavoriteProducts({ commit }) {
+    try {
+      const result = await axios({
+        method: 'get',
+        url: `${backendURL}customers/favorites`,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw errorHandler(error)
+    }
+  },
   async markProductFavorite({ commit }, { id }) {
     try {
       const result = await axios({

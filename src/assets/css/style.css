@@ -1,4 +1,7 @@
 /* basic scrollbar css starts */
+.cursor-pointer{
+  cursor: pointer;
+}
 /* scrollbar */
 ::-webkit-scrollbar {
   width: 5px;

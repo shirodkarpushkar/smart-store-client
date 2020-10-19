@@ -59,6 +59,14 @@ export default [
           authRequired: true,
         },
       },
+      {
+        path: '/favorites',
+        name: 'favorites',
+        component: () => lazyLoadView(import('@views/customer/favorites')),
+        meta: {
+          authRequired: true,
+        },
+      },
     ],
   },
 

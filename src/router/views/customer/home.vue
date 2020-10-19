@@ -70,6 +70,8 @@ export default {
     }
   },
   created() {
+
+
     this.getProducts()
   },
   methods: {
