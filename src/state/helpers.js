@@ -26,7 +26,10 @@ export const userMethods = mapActions('users', [
 ])
 export const productMethods = mapActions('products', [
   'getAllProducts',
+  'getCustomerProducts',
   'getProductById',
+  'markProductFavorite',
+  'unmarkProductFavorite',
 ])
 export const categoryMethods = mapActions('categories', [
   'getAllCategories',
