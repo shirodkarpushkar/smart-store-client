@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { categoryMethods } from '@state/helpers'
+import { categoryMethods,productMethods } from '@state/helpers'
 
 export default {
   data() {
@@ -76,6 +76,7 @@ export default {
   },
   methods: {
     ...categoryMethods,
+    ...productMethods,
     getProducts() {
       this.getProductByCategoryId({id:this.category.id })
         .then((res) => {
