@@ -35,4 +35,5 @@ export const productMethods = mapActions('products', [
 export const categoryMethods = mapActions('categories', [
   'getAllCategories',
   'getCategoryById',
+  'getProductByCategoryId',
 ])

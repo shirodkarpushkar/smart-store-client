@@ -6,15 +6,22 @@
           <a-icon type="menu" @click="openDrawer" />
         </div>
 
-        <div class="brand-img cursor-pointer"  @click="gotoRoute({ name: 'home' })">
+        <div class="brand-img">
           <img src="@assets/logo.svg" alt="" />
         </div>
-        <h3 class="brand-title cursor-pointer"   @click="gotoRoute({ name: 'home' })">Smart Store <small>v1.0</small> </h3></div
+        <h3
+          class="brand-title cursor-pointer"
+          @click="gotoRoute({ name: 'home', path: '/home' })"
+          >Smart Store <small>v1.0</small>
+        </h3></div
       >
       <a-menu mode="horizontal" class="nav-menu">
         <a-menu-item
           :class="{
-            'ant-menu-item-selected': currentRoute({ name: 'favorites' }),
+            'ant-menu-item-selected': currentRoute({
+              name: 'favorites',
+              path: '/favorites',
+            }),
           }"
           @click="gotoRoute({ name: 'favorites' })"
           ><a-icon type="heart" />Favourites
@@ -73,25 +80,30 @@
       >
         <a-sub-menu key="category">
           <span slot="title"
-            ><a-icon type="apartment" /><span> Avalaible Categories</span></span
+            ><a-icon type="apartment" /><span> Available Categories</span></span
           >
-          <a-menu-item>
-            Home and Garden
-          </a-menu-item>
-          <a-menu-item>
-            Electronic
-          </a-menu-item>
-          <a-menu-item>
-            Fashion
-          </a-menu-item>
-          <a-menu-item>
-            Music
-          </a-menu-item>
-          <a-menu-item>
-            Sports
-          </a-menu-item>
-          <a-menu-item>
-            Gaming
+          <a-menu-item
+            v-for="el in categoryList"
+            :key="el.id"
+            :class="{
+              'ant-menu-item-selected': currentRoute({
+                name: 'category',
+                params: { id: el.id },
+                path: '/category/' + el.id,
+              }),
+            }"
+            @click="
+              gotoRoute({
+                name: 'category',
+                params: { id: el.id },
+                query: {
+                  categoryName: el.name,
+                },
+                path: '/category/' + el.id,
+              })
+            "
+          >
+            {{ el.name }}
           </a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="account">
@@ -116,7 +128,7 @@
 </template>
 <script>
 import layoutFooter from '@layouts/footer'
-import { authGetters, authMethods } from '@state/helpers'
+import { authGetters, authMethods, categoryMethods } from '@state/helpers'
 export default {
   components: {
     layoutFooter,
@@ -125,6 +137,7 @@ export default {
     return {
       showDrawer: false,
       imgBaseUrl: process.env.VUE_APP_BASE_URL,
+      categoryList: [],
     }
   },
   computed: {
@@ -132,10 +145,14 @@ export default {
       return this.getAuthenticationToken()
     },
   },
-
+  created() {
+    console.log('created -> this.$route', this.$route)
+    this.getCategoryList()
+  },
   methods: {
     ...authGetters,
     ...authMethods,
+    ...categoryMethods,
     openDrawer() {
       this.showDrawer = true
     },
@@ -147,14 +164,25 @@ export default {
       this.signOut()
     },
     currentRoute(route) {
-      if (route.name === this.$route.name) {
+      if (route.path === this.$route.path) {
         return true
       } else {
         return false
       }
     },
     gotoRoute(route) {
-      this.$router.push(route)
+      if (route.path !== this.$route.path || route.name !== this.$route.name) {
+        this.$router.push(route)
+      }
+    },
+    getCategoryList() {
+      this.getAllCategories()
+        .then((res) => {
+          this.categoryList = res.result
+        })
+        .catch((err) => {
+          this.$message.error(err)
+        })
     },
   },
 }

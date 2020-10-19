@@ -67,6 +67,15 @@ export default [
           authRequired: true,
         },
       },
+      {
+        path: '/category/:id',
+        name: 'category',
+        component: () =>
+          lazyLoadView(import('@views/customer/CategoryProduct')),
+        meta: {
+          authRequired: true,
+        },
+      },
     ],
   },
 

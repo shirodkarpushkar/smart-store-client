@@ -21,7 +21,7 @@ export const actions = {
         throw response
       }
     } catch (error) {
-      throw error
+      throw errorHandler(error)
     }
   },
   async getCategoryById({ commit }, { id }) {
@@ -37,7 +37,27 @@ export const actions = {
         throw response
       }
     } catch (error) {
-      throw error
+      throw errorHandler(error)
     }
   },
+  async getProductByCategoryId({ commit }, { id }) {
+    try {
+      const result = await axios({
+        method: 'get',
+        url: `${backendURL}categories/${id}/products`,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw errorHandler(error)
+    }
+  },
+}
+
+function errorHandler(err) {
+  return err.message ? err.message : err.status.message
 }
