@@ -1,5 +1,5 @@
 /* basic scrollbar css starts */
-.cursor-pointer{
+.cursor-pointer {
   cursor: pointer;
 }
 /* scrollbar */
@@ -224,12 +224,11 @@ h6 {
 }
 
 .loader {
-  text-align: center;
   background: rgba(0, 0, 0, 0.05);
-  border-radius: 4px;
-  margin-bottom: 20px;
-  padding: 30px 50px;
-  margin: 20px 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .nav-head {
