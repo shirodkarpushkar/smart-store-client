@@ -3,13 +3,15 @@
     <template slot="actions">
       <a-rate :default-value="review.rating" disabled />
     </template>
-    <a slot="author">&nbsp;{{ review.customer.name }}  &nbsp; <span class="float-right">{{ review.createdAt | dateIST}}</span></a>
+    <a slot="author"
+      >&nbsp;{{ review.customer.name }} &nbsp;
+      <span class="float-right">{{ review.createdAt | dateIST }}</span></a
+    >
     <a-avatar
       slot="avatar"
       :src="imageBaseURL + review.customer.avatar"
       alt="Han Solo"
     />
-
 
     <div slot="content">
       <h4>&nbsp;{{ review.title }}</h4>
@@ -22,12 +24,16 @@
 export default {
   filters: {
     dateIST: function(value) {
-      let date = new Date(value)
-      let dateUTC = date.getTime()
-      var dateIST = new Date(dateUTC)
-      dateIST.setHours(dateIST.getHours() + 5)
-      dateIST.setMinutes(dateIST.getMinutes() + 30)
-      return dateIST
+      let currentTime = new Date(value)
+
+      let currentOffset = currentTime.getTimezoneOffset()
+
+      let ISTOffset = 330 // IST offset UTC +5:30
+
+      let ISTTime = new Date(
+        currentTime.getTime() + (ISTOffset + currentOffset) * 60000
+      )
+      return ISTTime
     },
   },
   props: {
