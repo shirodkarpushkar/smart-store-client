@@ -29,6 +29,8 @@ export const productMethods = mapActions('products', [
   'getCustomerProducts',
   'getFavoriteProducts',
   'getProductById',
+  'getProductReviewsById',
+  'addProductReviewsById',
   'markProductFavorite',
   'unmarkProductFavorite',
 ])

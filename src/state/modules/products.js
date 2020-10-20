@@ -40,6 +40,39 @@ export const actions = {
       throw errorHandler(error)
     }
   },
+  async getProductReviewsById({ commit }, { id }) {
+    try {
+      const result = await axios({
+        method: 'get',
+        url: `${backendURL}products/${id}/reviews`,
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw errorHandler(error)
+    }
+  },
+  async addProductReviewsById({ commit }, { id, data }) {
+    try {
+      const result = await axios({
+        method: 'post',
+        url: `${backendURL}products/${id}/reviews`,
+        data
+      })
+      const response = result.data
+      if (response.status.code === 200) {
+        return response
+      } else {
+        throw response
+      }
+    } catch (error) {
+      throw errorHandler(error)
+    }
+  },
   async getCustomerProducts({ commit }) {
     try {
       const result = await axios({

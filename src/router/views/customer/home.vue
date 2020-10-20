@@ -25,7 +25,7 @@
               </svg>
 
               <a-icon type="shopping-cart" />
-              <a-button type="primary">
+              <a-button type="primary" @click="viewProduct(el)">
                 View
               </a-button>
             </template>
@@ -103,6 +103,9 @@ export default {
             this.$message.error(err)
           })
       }
+    },
+    viewProduct(el) {
+      this.$router.push({ name: 'product', params: { id: el.id } })
     },
   },
 }

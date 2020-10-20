@@ -76,6 +76,14 @@ export default [
           authRequired: true,
         },
       },
+      {
+        path: '/product/:id',
+        name: 'product',
+        component: () => lazyLoadView(import('@views/product/productDetails')),
+        meta: {
+          authRequired: true,
+        },
+      },
     ],
   },
 
